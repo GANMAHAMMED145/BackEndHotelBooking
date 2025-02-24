@@ -15,7 +15,7 @@ spec:
       containers:
         - name: spring-boot-k8s
           image: mahammed145/residentialhotelbookingproject  # Image used for containers
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 9192  # Port the container is running on
 
