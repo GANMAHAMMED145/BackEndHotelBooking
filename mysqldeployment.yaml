@@ -1,31 +1,22 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
-  hostPath:
-    path: "/mnt/data"
-
----
+#Define a Persistent Volume claim (VPC) for Mysql Storage, dynamically provided by cluster
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pvc
+  name: mysql-pvc-claim
+  labels:
+    app: mysql
+    tier: database
+
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: manual
+
 
 ---
+#configure 'service' for  mysql server to expose to outside
 apiVersion: v1
 kind: Service
 metadata:
@@ -38,19 +29,28 @@ spec:
   clusterIP: None
 
 ---
+#Configure 'Deployment' of mysql server
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: mysql
+  labels:
+    app: mysql
+    tier: database
+
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: mysql
+      tier: database
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: mysql
+        tier: database
     spec:
       containers:
         - name: mysql
@@ -63,9 +63,9 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: mysql-storage
+            - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
       volumes:
-        - name: mysql-storage
+        - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pvc
+            claimName: mysql-pvc-claim
