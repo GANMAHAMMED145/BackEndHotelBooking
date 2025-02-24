@@ -19,6 +19,8 @@ spec:
           ports:
             - containerPort: 9192
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "mysql"
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:mysql://mysql-service:3306/famoushotel"
             - name: SPRING_DATASOURCE_USERNAME

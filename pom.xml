@@ -115,4 +115,21 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<!-- Local Profile: Uses H2 Database -->
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+		</profile>
+
+		<!-- Production Profile: Uses MySQL -->
+		<profile>
+			<id>mysql</id>
+			<properties>
+				<spring.profiles.active>mysql</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
 </project>
