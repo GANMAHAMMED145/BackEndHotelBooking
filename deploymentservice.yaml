@@ -17,7 +17,7 @@ spec:
           image: mahammed145/residentialhotelbookingproject  # Image used for containers
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080  # Port the container is running on
+            - containerPort: 9192  # Port the container is running on
 
 ---
 
@@ -30,8 +30,8 @@ spec:
     app: spring-boot-k8s
   ports:
     - protocol: TCP
-      port: 8080  # The port the service is running on in the cluster
-      targetPort: 8080  # The port exposed by the service
+      port: 9192  # The port the service is running on in the cluster
+      targetPort: 9192  # The port exposed by the service
   type: NodePort  # Type of service
 
 
